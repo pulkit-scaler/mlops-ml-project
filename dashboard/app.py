@@ -191,4 +191,26 @@ with about:
     st.write(f"**Study** {card['study']['trials']} trials, "
              f"best cross validated ROC AUC {card['study']['best_cv_roc_auc']}")
     st.write(f"**Trained** {card['trained_at']}")
+
+    st.subheader("Where the calls go")
+    counts = card["confusion_at_threshold"]
+    called = counts["true_positive"] + counts["false_positive"]
+    d, e, f = st.columns(3)
+    d.metric("Calls made", f"{called:,}")
+    e.metric("Wasted", f"{counts['false_positive'] / called:.0%}")
+    f.metric("Subscribers missed", f"{counts['false_negative']:,}")
+    st.caption(
+        "On the held out sample. Roughly half of every call list is a call "
+        "that will not convert, which is the cost of reaching the ones that do."
+    )
+
+    st.subheader("What the model leans on")
+    reliance = pd.DataFrame(card["feature_reliance"]).head(10)
+    st.bar_chart(reliance.set_index("feature")["drop_in_auc"])
+    st.caption(
+        "Drop in ROC AUC when that column is shuffled. The economic columns "
+        "outrank every property of the customer, which is worth knowing before "
+        "anybody calls this a customer targeting model."
+    )
+
     st.json(card["git"])

@@ -37,3 +37,12 @@ def test_request_fields_plus_derived_plus_context_cover_the_model(meta):
     caller = set(Customer.model_fields) - {"days_since_last_contact"}
     derived = {"pdays", "previously_contacted"}
     assert caller | derived | set(MARKET_CONTEXT) == set(meta["feature_order"])
+
+
+def test_the_artifact_explains_itself(meta):
+    """A service asked "why did it say that" should not need the training data."""
+    reliance = meta["feature_reliance"]
+    assert len(reliance) == len(meta["feature_order"])
+    assert reliance == sorted(reliance, key=lambda row: -row["drop_in_auc"])
+    counts = meta["confusion_at_threshold"]
+    assert sum(counts.values()) == meta["n_test"]

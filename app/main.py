@@ -151,6 +151,8 @@ def model_card(request: Request):
         "metrics": meta["metrics"],
         "study": meta["study"],
         "categories": meta["categories"],
+        "confusion_at_threshold": meta["confusion_at_threshold"],
+        "feature_reliance": meta["feature_reliance"],
     }
 
 
