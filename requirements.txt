@@ -1,0 +1,17 @@
+# Exact pin, because churn_pipeline.joblib was pickled by this version and the
+# service refuses to report healthy when the running version differs.
+scikit-learn==1.9.1
+
+# Floors only. These do not change the numbers, and pinning them exactly breaks
+# on Python versions that have no wheels for the older releases.
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+pandas>=2.2
+numpy>=1.24
+joblib>=1.4
+kagglehub>=0.3
+
+# Testing only.
+pytest>=8.0
+httpx>=0.27

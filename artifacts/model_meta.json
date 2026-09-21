@@ -1,0 +1,140 @@
+{
+  "model_version": "20260921-logreg-1",
+  "trained_at": "2026-09-21T07:34:51+00:00",
+  "data_source": "kagglehub -> WA_Fn-UseC_-Telco-Customer-Churn.csv",
+  "sklearn_version": "1.9.1",
+  "python_version": "3.12.13",
+  "numeric_features": [
+    "tenure",
+    "MonthlyCharges",
+    "TotalCharges"
+  ],
+  "categorical_features": [
+    "gender",
+    "SeniorCitizen",
+    "Partner",
+    "Dependents",
+    "PhoneService",
+    "MultipleLines",
+    "InternetService",
+    "OnlineSecurity",
+    "OnlineBackup",
+    "DeviceProtection",
+    "TechSupport",
+    "StreamingTV",
+    "StreamingMovies",
+    "Contract",
+    "PaperlessBilling",
+    "PaymentMethod"
+  ],
+  "feature_order": [
+    "tenure",
+    "MonthlyCharges",
+    "TotalCharges",
+    "gender",
+    "SeniorCitizen",
+    "Partner",
+    "Dependents",
+    "PhoneService",
+    "MultipleLines",
+    "InternetService",
+    "OnlineSecurity",
+    "OnlineBackup",
+    "DeviceProtection",
+    "TechSupport",
+    "StreamingTV",
+    "StreamingMovies",
+    "Contract",
+    "PaperlessBilling",
+    "PaymentMethod"
+  ],
+  "categories": {
+    "gender": [
+      "Female",
+      "Male"
+    ],
+    "SeniorCitizen": [
+      0,
+      1
+    ],
+    "Partner": [
+      "No",
+      "Yes"
+    ],
+    "Dependents": [
+      "No",
+      "Yes"
+    ],
+    "PhoneService": [
+      "No",
+      "Yes"
+    ],
+    "MultipleLines": [
+      "No",
+      "No phone service",
+      "Yes"
+    ],
+    "InternetService": [
+      "DSL",
+      "Fiber optic",
+      "No"
+    ],
+    "OnlineSecurity": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "OnlineBackup": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "DeviceProtection": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "TechSupport": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "StreamingTV": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "StreamingMovies": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "Contract": [
+      "Month-to-month",
+      "One year",
+      "Two year"
+    ],
+    "PaperlessBilling": [
+      "No",
+      "Yes"
+    ],
+    "PaymentMethod": [
+      "Bank transfer (automatic)",
+      "Credit card (automatic)",
+      "Electronic check",
+      "Mailed check"
+    ]
+  },
+  "decision_threshold": 0.35,
+  "n_train": 5282,
+  "n_test": 1761,
+  "train_positive_rate": 0.2654,
+  "metrics": {
+    "cv_f1_at_threshold": 0.6337,
+    "test_roc_auc": 0.8467,
+    "test_f1_at_half": 0.6054,
+    "test_f1_at_threshold": 0.6245,
+    "test_precision_at_threshold": 0.5517,
+    "test_recall_at_threshold": 0.7195
+  }
+}
