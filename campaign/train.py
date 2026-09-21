@@ -24,7 +24,14 @@ import joblib
 import numpy as np
 import optuna
 import sklearn
-from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score
+from sklearn.inspection import permutation_importance
+from sklearn.metrics import (
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
 from sklearn.model_selection import StratifiedKFold, cross_val_predict, train_test_split
 
 from .data import (
@@ -110,6 +117,34 @@ def pick_threshold(pipeline, X, y):
     return float(grid[best]), float(scores[best])
 
 
+def reliance(pipeline, X, y, sample=3000):
+    """How much the fitted model leans on each input column.
+
+    Permutation importance shuffles one column at a time and measures what
+    the score loses. It is computed on held out data and it is a description,
+    not a selection step: nothing here changes the model.
+
+    It goes in the metadata because the question "why did it say that" gets
+    asked of a service, not of a notebook, and the answer should not require
+    anybody to have the training data to hand.
+    """
+    if len(X) > sample:
+        X = X.sample(sample, random_state=RANDOM_STATE)
+        y = y.loc[X.index]
+    result = permutation_importance(
+        pipeline, X, y, scoring="roc_auc", n_repeats=5,
+        random_state=RANDOM_STATE, n_jobs=-1,
+    )
+    ranked = sorted(
+        zip(X.columns, result.importances_mean, result.importances_std),
+        key=lambda row: -row[1],
+    )
+    return [
+        {"feature": name, "drop_in_auc": round(float(mean), 4), "sd": round(float(sd), 4)}
+        for name, mean, sd in ranked
+    ]
+
+
 def main():
     raw, source = load_raw()
     X, y = clean(raw)
@@ -132,6 +167,8 @@ def main():
         for column, values in zip(CATEGORICAL_FEATURES, encoder.categories_)
     }
     context = latest_market_context(raw)
+    tn, fp, fn, tp = confusion_matrix(y_test, at_chosen).ravel()
+    importances = reliance(pipeline, X_test, y_test)
 
     meta = {
         "model_version": datetime.now(timezone.utc).strftime("%Y%m%d") + f"-{family}-1",
@@ -154,6 +191,11 @@ def main():
         "n_train": int(len(X_train)),
         "n_test": int(len(X_test)),
         "train_positive_rate": round(float(y_train.mean()), 4),
+        "confusion_at_threshold": {
+            "true_negative": int(tn), "false_positive": int(fp),
+            "false_negative": int(fn), "true_positive": int(tp),
+        },
+        "feature_reliance": importances,
         "metrics": {
             "cv_f1_at_threshold": round(cv_f1, 4),
             "test_roc_auc": round(float(roc_auc_score(y_test, proba)), 4),
@@ -179,6 +221,9 @@ def main():
     print(f"test ROC AUC    : {meta['metrics']['test_roc_auc']:.4f}")
     print(f"test F1 at 0.50 : {meta['metrics']['test_f1_at_half']:.4f}")
     print(f"test F1 at {threshold:.2f} : {meta['metrics']['test_f1_at_threshold']:.4f}")
+    print(f"calls made      : {tp + fp:,}, wasted {fp:,} ({fp / (tp + fp):.0%})")
+    print(f"subscribers      : reached {tp:,}, missed {fn:,}")
+    print(f"leans most on   : {', '.join(i['feature'] for i in importances[:3])}")
     print(f"built from      : {short}{' (dirty tree)' if meta['git']['dirty'] else ''}")
     print(f"wrote {MODEL_PATH.name}, {META_PATH.name} and {CONTEXT_PATH.name}")
     return 0

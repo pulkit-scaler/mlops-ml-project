@@ -1,9 +1,9 @@
 {
   "model_version": "20260921-hgb-1",
-  "trained_at": "2026-09-21T08:24:08+00:00",
+  "trained_at": "2026-09-21T10:45:44+00:00",
   "git": {
-    "commit": "0a5c99bf7a79c629ddbc576997bbf5649d8e1463",
-    "dirty": false,
+    "commit": "29f7ae5ae8db8a6e9f3c8c7d24a781037a802653",
+    "dirty": true,
     "note": null
   },
   "data_source": "kagglehub -> bank-additional-full.csv",
@@ -172,6 +172,114 @@
   "n_train": 30891,
   "n_test": 10297,
   "train_positive_rate": 0.1127,
+  "confusion_at_threshold": {
+    "true_negative": 8353,
+    "false_positive": 784,
+    "false_negative": 470,
+    "true_positive": 690
+  },
+  "feature_reliance": [
+    {
+      "feature": "nr.employed",
+      "drop_in_auc": 0.0619,
+      "sd": 0.0037
+    },
+    {
+      "feature": "cons.price.idx",
+      "drop_in_auc": 0.0298,
+      "sd": 0.0048
+    },
+    {
+      "feature": "contact",
+      "drop_in_auc": 0.0203,
+      "sd": 0.0043
+    },
+    {
+      "feature": "emp.var.rate",
+      "drop_in_auc": 0.0147,
+      "sd": 0.0072
+    },
+    {
+      "feature": "euribor3m",
+      "drop_in_auc": 0.0106,
+      "sd": 0.0036
+    },
+    {
+      "feature": "month",
+      "drop_in_auc": 0.0092,
+      "sd": 0.0024
+    },
+    {
+      "feature": "cons.conf.idx",
+      "drop_in_auc": 0.0055,
+      "sd": 0.0027
+    },
+    {
+      "feature": "previously_contacted",
+      "drop_in_auc": 0.0037,
+      "sd": 0.0005
+    },
+    {
+      "feature": "campaign",
+      "drop_in_auc": 0.0031,
+      "sd": 0.003
+    },
+    {
+      "feature": "marital",
+      "drop_in_auc": 0.0013,
+      "sd": 0.0005
+    },
+    {
+      "feature": "default",
+      "drop_in_auc": 0.0012,
+      "sd": 0.0007
+    },
+    {
+      "feature": "day_of_week",
+      "drop_in_auc": 0.0011,
+      "sd": 0.0009
+    },
+    {
+      "feature": "job",
+      "drop_in_auc": 0.0006,
+      "sd": 0.0011
+    },
+    {
+      "feature": "education",
+      "drop_in_auc": 0.0004,
+      "sd": 0.0013
+    },
+    {
+      "feature": "previous",
+      "drop_in_auc": 0.0004,
+      "sd": 0.0009
+    },
+    {
+      "feature": "pdays",
+      "drop_in_auc": -0.0,
+      "sd": 0.0
+    },
+    {
+      "feature": "loan",
+      "drop_in_auc": -0.0003,
+      "sd": 0.0005
+    },
+    {
+      "feature": "poutcome",
+      "drop_in_auc": -0.0007,
+      "sd": 0.0003
+    },
+    {
+      "feature": "age",
+      "drop_in_auc": -0.0017,
+      "sd": 0.0033
+    },
+    {
+      "feature": "housing",
+      "drop_in_auc": -0.0026,
+      "sd": 0.0009
+    }
+  ],
   "metrics": {
     "cv_f1_at_threshold": 0.4995,
     "test_roc_auc": 0.8166,
