@@ -1,4 +1,4 @@
-"""Shared fixtures. Tests read the committed CSV so they never touch the network."""
+"""Shared fixtures. Tests read the committed copy so they never need a network."""
 import json
 import sys
 from pathlib import Path
@@ -9,12 +9,12 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from churn.data import LOCAL_CSV, clean  # noqa: E402
+from campaign.data import LOCAL_CSV, clean  # noqa: E402
 
 
 @pytest.fixture(scope="session")
 def raw():
-    return pd.read_csv(LOCAL_CSV)
+    return pd.read_csv(LOCAL_CSV, sep=";")
 
 
 @pytest.fixture(scope="session")
@@ -28,26 +28,11 @@ def meta():
 
 
 @pytest.fixture(scope="session")
-def sample_customer():
-    """A short tenure, month to month, fiber customer. The risky profile."""
+def prospect():
+    """A cold prospect: never contacted, no previous campaign."""
     return {
-        "tenure": 2,
-        "MonthlyCharges": 89.1,
-        "TotalCharges": 178.2,
-        "gender": "Female",
-        "SeniorCitizen": 0,
-        "Partner": "No",
-        "Dependents": "No",
-        "PhoneService": "Yes",
-        "MultipleLines": "No",
-        "InternetService": "Fiber optic",
-        "OnlineSecurity": "No",
-        "OnlineBackup": "No",
-        "DeviceProtection": "No",
-        "TechSupport": "No",
-        "StreamingTV": "Yes",
-        "StreamingMovies": "Yes",
-        "Contract": "Month-to-month",
-        "PaperlessBilling": "Yes",
-        "PaymentMethod": "Electronic check",
+        "age": 41, "campaign": 1, "previous": 0, "days_since_last_contact": None,
+        "job": "admin.", "marital": "married", "education": "university.degree",
+        "default": "no", "housing": "yes", "loan": "no", "contact": "cellular",
+        "month": "may", "day_of_week": "mon", "poutcome": "nonexistent",
     }

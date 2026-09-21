@@ -1,15 +1,18 @@
-# Exact pin, because churn_pipeline.joblib was pickled by this version and the
-# service refuses to report healthy when the running version differs.
+# Exact pin, because model.joblib was pickled by this version and the service
+# reports itself degraded when the running version differs.
 scikit-learn==1.9.1
 
 # Floors only. These do not change the numbers, and pinning them exactly breaks
 # on Python versions that have no wheels for the older releases.
+optuna>=4.0
 fastapi>=0.115
 uvicorn[standard]>=0.30
 pydantic>=2.7
+streamlit>=1.40
 pandas>=2.2
 numpy>=1.24
 joblib>=1.4
+requests>=2.31
 kagglehub>=0.3
 
 # Testing only.

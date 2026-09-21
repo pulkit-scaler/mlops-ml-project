@@ -1,8 +1,8 @@
 """Where you load the model decides your latency.
 
-/slow reads and unpickles the artifact inside the handler, so every caller pays
-for it. /fast uses the object loaded once in the lifespan handler. Same model,
-same answer, and the class measures the difference.
+/slow reads and unpickles the artifact inside the handler, so every caller
+pays for it. /fast uses the object loaded once in the lifespan handler. Same
+model, same answer, and the session measures the difference.
 """
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -10,7 +10,7 @@ from pathlib import Path
 import joblib
 from fastapi import FastAPI
 
-MODEL_PATH = Path(__file__).resolve().parents[1] / "artifacts" / "churn_pipeline.joblib"
+MODEL_PATH = Path(__file__).resolve().parents[1] / "artifacts" / "model.joblib"
 
 
 @asynccontextmanager

@@ -1,140 +1,183 @@
 {
-  "model_version": "20260921-logreg-1",
-  "trained_at": "2026-09-21T07:34:51+00:00",
-  "data_source": "kagglehub -> WA_Fn-UseC_-Telco-Customer-Churn.csv",
+  "model_version": "20260921-hgb-1",
+  "trained_at": "2026-09-21T08:24:08+00:00",
+  "git": {
+    "commit": "0a5c99bf7a79c629ddbc576997bbf5649d8e1463",
+    "dirty": false,
+    "note": null
+  },
+  "data_source": "kagglehub -> bank-additional-full.csv",
   "sklearn_version": "1.9.1",
   "python_version": "3.12.13",
+  "family": "hgb",
+  "params": {
+    "learning_rate": 0.024646572626592936,
+    "max_leaf_nodes": 45,
+    "min_samples_leaf": 45,
+    "l2_regularization": 0.02652032650731299,
+    "max_iter": 178
+  },
+  "study": {
+    "trials": 60,
+    "best_cv_roc_auc": 0.8013
+  },
+  "customer_numeric": [
+    "age",
+    "campaign",
+    "pdays",
+    "previous",
+    "previously_contacted"
+  ],
+  "customer_categorical": [
+    "job",
+    "marital",
+    "education",
+    "default",
+    "housing",
+    "loan",
+    "contact",
+    "month",
+    "day_of_week",
+    "poutcome"
+  ],
+  "market_context": [
+    "emp.var.rate",
+    "cons.price.idx",
+    "cons.conf.idx",
+    "euribor3m",
+    "nr.employed"
+  ],
   "numeric_features": [
-    "tenure",
-    "MonthlyCharges",
-    "TotalCharges"
+    "age",
+    "campaign",
+    "pdays",
+    "previous",
+    "previously_contacted",
+    "emp.var.rate",
+    "cons.price.idx",
+    "cons.conf.idx",
+    "euribor3m",
+    "nr.employed"
   ],
   "categorical_features": [
-    "gender",
-    "SeniorCitizen",
-    "Partner",
-    "Dependents",
-    "PhoneService",
-    "MultipleLines",
-    "InternetService",
-    "OnlineSecurity",
-    "OnlineBackup",
-    "DeviceProtection",
-    "TechSupport",
-    "StreamingTV",
-    "StreamingMovies",
-    "Contract",
-    "PaperlessBilling",
-    "PaymentMethod"
+    "job",
+    "marital",
+    "education",
+    "default",
+    "housing",
+    "loan",
+    "contact",
+    "month",
+    "day_of_week",
+    "poutcome"
   ],
   "feature_order": [
-    "tenure",
-    "MonthlyCharges",
-    "TotalCharges",
-    "gender",
-    "SeniorCitizen",
-    "Partner",
-    "Dependents",
-    "PhoneService",
-    "MultipleLines",
-    "InternetService",
-    "OnlineSecurity",
-    "OnlineBackup",
-    "DeviceProtection",
-    "TechSupport",
-    "StreamingTV",
-    "StreamingMovies",
-    "Contract",
-    "PaperlessBilling",
-    "PaymentMethod"
+    "age",
+    "campaign",
+    "pdays",
+    "previous",
+    "previously_contacted",
+    "emp.var.rate",
+    "cons.price.idx",
+    "cons.conf.idx",
+    "euribor3m",
+    "nr.employed",
+    "job",
+    "marital",
+    "education",
+    "default",
+    "housing",
+    "loan",
+    "contact",
+    "month",
+    "day_of_week",
+    "poutcome"
   ],
   "categories": {
-    "gender": [
-      "Female",
-      "Male"
+    "job": [
+      "admin.",
+      "blue-collar",
+      "entrepreneur",
+      "housemaid",
+      "management",
+      "retired",
+      "self-employed",
+      "services",
+      "student",
+      "technician",
+      "unemployed",
+      "unknown"
     ],
-    "SeniorCitizen": [
-      0,
-      1
+    "marital": [
+      "divorced",
+      "married",
+      "single",
+      "unknown"
     ],
-    "Partner": [
-      "No",
-      "Yes"
+    "education": [
+      "basic.4y",
+      "basic.6y",
+      "basic.9y",
+      "high.school",
+      "illiterate",
+      "professional.course",
+      "university.degree",
+      "unknown"
     ],
-    "Dependents": [
-      "No",
-      "Yes"
+    "default": [
+      "no",
+      "unknown",
+      "yes"
     ],
-    "PhoneService": [
-      "No",
-      "Yes"
+    "housing": [
+      "no",
+      "unknown",
+      "yes"
     ],
-    "MultipleLines": [
-      "No",
-      "No phone service",
-      "Yes"
+    "loan": [
+      "no",
+      "unknown",
+      "yes"
     ],
-    "InternetService": [
-      "DSL",
-      "Fiber optic",
-      "No"
+    "contact": [
+      "cellular",
+      "telephone"
     ],
-    "OnlineSecurity": [
-      "No",
-      "No internet service",
-      "Yes"
+    "month": [
+      "apr",
+      "aug",
+      "dec",
+      "jul",
+      "jun",
+      "mar",
+      "may",
+      "nov",
+      "oct",
+      "sep"
     ],
-    "OnlineBackup": [
-      "No",
-      "No internet service",
-      "Yes"
+    "day_of_week": [
+      "fri",
+      "mon",
+      "thu",
+      "tue",
+      "wed"
     ],
-    "DeviceProtection": [
-      "No",
-      "No internet service",
-      "Yes"
-    ],
-    "TechSupport": [
-      "No",
-      "No internet service",
-      "Yes"
-    ],
-    "StreamingTV": [
-      "No",
-      "No internet service",
-      "Yes"
-    ],
-    "StreamingMovies": [
-      "No",
-      "No internet service",
-      "Yes"
-    ],
-    "Contract": [
-      "Month-to-month",
-      "One year",
-      "Two year"
-    ],
-    "PaperlessBilling": [
-      "No",
-      "Yes"
-    ],
-    "PaymentMethod": [
-      "Bank transfer (automatic)",
-      "Credit card (automatic)",
-      "Electronic check",
-      "Mailed check"
+    "poutcome": [
+      "failure",
+      "nonexistent",
+      "success"
     ]
   },
-  "decision_threshold": 0.35,
-  "n_train": 5282,
-  "n_test": 1761,
-  "train_positive_rate": 0.2654,
+  "decision_threshold": 0.22,
+  "n_train": 30891,
+  "n_test": 10297,
+  "train_positive_rate": 0.1127,
   "metrics": {
-    "cv_f1_at_threshold": 0.6337,
-    "test_roc_auc": 0.8467,
-    "test_f1_at_half": 0.6054,
-    "test_f1_at_threshold": 0.6245,
-    "test_precision_at_threshold": 0.5517,
-    "test_recall_at_threshold": 0.7195
+    "cv_f1_at_threshold": 0.4995,
+    "test_roc_auc": 0.8166,
+    "test_f1_at_half": 0.367,
+    "test_f1_at_threshold": 0.5239,
+    "test_precision_at_threshold": 0.4681,
+    "test_recall_at_threshold": 0.5948
   }
 }

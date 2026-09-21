@@ -19,52 +19,63 @@ def test_health_reports_a_loaded_model(client):
     assert body["sklearn_version_matches"] is True
 
 
-def test_predict_returns_the_promised_shape(client, sample_customer):
-    body = client.post("/predict", json=sample_customer).json()
-    assert set(body) == {"churn_probability", "churn", "threshold", "model_version"}
-    assert 0.0 <= body["churn_probability"] <= 1.0
-    assert body["churn"] == (body["churn_probability"] >= body["threshold"])
+def test_health_names_the_commit_that_built_the_model(client):
+    """Provenance a caller can read without opening the repository."""
+    assert client.get("/health").json()["model_commit"]
 
 
-def test_a_typo_in_a_category_is_rejected_not_ignored(client, sample_customer):
-    bad = dict(sample_customer, Contract="Month to month")
-    response = client.post("/predict", json=bad)
+def test_predict_returns_the_promised_shape(client, prospect):
+    body = client.post("/predict", json=prospect).json()
+    assert set(body) == {"subscribe_probability", "call", "threshold", "model_version"}
+    assert 0.0 <= body["subscribe_probability"] <= 1.0
+    assert body["call"] == (body["subscribe_probability"] >= body["threshold"])
+
+
+def test_the_threshold_served_is_not_the_library_default(client, prospect):
+    """If this starts failing at 0.5, somebody replaced the stored threshold."""
+    assert client.post("/predict", json=prospect).json()["threshold"] != 0.5
+
+
+def test_a_typo_in_a_category_is_rejected_not_ignored(client, prospect):
+    response = client.post("/predict", json=dict(prospect, month="May"))
     assert response.status_code == 422
-    assert response.json()["detail"][0]["loc"] == ["body", "Contract"]
+    assert response.json()["detail"][0]["loc"] == ["body", "month"]
 
 
-def test_an_unknown_field_is_rejected(client, sample_customer):
-    response = client.post("/predict", json=dict(sample_customer, Loyalty="gold"))
+def test_economic_context_cannot_be_supplied_by_the_caller(client, prospect):
+    response = client.post("/predict", json=dict(prospect, euribor3m=4.9))
     assert response.status_code == 422
     assert response.json()["detail"][0]["type"] == "extra_forbidden"
 
 
-def test_a_missing_field_is_rejected(client, sample_customer):
-    payload = {k: v for k, v in sample_customer.items() if k != "TechSupport"}
+def test_a_missing_field_is_rejected(client, prospect):
+    payload = {k: v for k, v in prospect.items() if k != "poutcome"}
     assert client.post("/predict", json=payload).status_code == 422
 
 
-def test_a_negative_tenure_is_rejected(client, sample_customer):
-    assert client.post("/predict", json=dict(sample_customer, tenure=-1)).status_code == 422
+def test_never_contacted_is_expressed_as_null_not_999(client, prospect):
+    assert client.post("/predict", json=dict(prospect, days_since_last_contact=None)).status_code == 200
+    assert client.post("/predict", json=dict(prospect, days_since_last_contact=999)).status_code == 422
 
 
-def test_batch_matches_one_at_a_time(client, sample_customer):
-    other = dict(sample_customer, Contract="Two year", tenure=60, TotalCharges=4200.0)
-    batch = client.post("/predict/batch", json=[sample_customer, other]).json()
-    singles = [client.post("/predict", json=p).json() for p in (sample_customer, other)]
+def test_batch_matches_one_at_a_time(client, prospect):
+    other = dict(prospect, age=58, job="retired", poutcome="success",
+                 previous=2, days_since_last_contact=6)
+    batch = client.post("/predict/batch", json=[prospect, other]).json()
+    singles = [client.post("/predict", json=p).json() for p in (prospect, other)]
     assert batch == singles
 
 
-def test_the_service_agrees_with_the_pipeline_it_serves(client, sample_customer):
+def test_the_service_agrees_with_the_pipeline_it_serves(client, prospect):
     """The skew test.
 
-    Score the same customer twice: once through HTTP, once by calling the
-    pipeline directly the way training does. A serving layer that reorders,
-    renames or retypes a column will pass every other test in this file and
-    fail this one.
+    Score the same prospect twice: once through HTTP, once by calling the
+    pipeline directly. A serving layer that reorders a column, derives the
+    contact features differently or forgets the economic context will pass
+    every other test in this file and fail this one.
     """
-    served = client.post("/predict", json=sample_customer).json()
+    served = client.post("/predict", json=prospect).json()
     bundle = app.state.bundle
-    frame = to_frame(Customer(**sample_customer), bundle["meta"])
+    frame = to_frame([Customer(**prospect)], bundle)
     direct = bundle["pipeline"].predict_proba(frame)[0, 1]
-    assert served["churn_probability"] == pytest.approx(direct, abs=5e-5)
+    assert served["subscribe_probability"] == pytest.approx(direct, abs=5e-5)
