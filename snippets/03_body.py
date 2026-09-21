@@ -8,11 +8,11 @@ from pydantic import BaseModel
 app = FastAPI()
 
 
-class Order(BaseModel):
-    sku: str
-    quantity: int
+class CallRequest(BaseModel):
+    prospect_id: int
+    attempts: int
 
 
-@app.post("/orders")
-def create_order(order: Order):
-    return {"sku": order.sku, "units": order.quantity, "total_is_known": False}
+@app.post("/calls")
+def log_call(call: CallRequest):
+    return {"prospect_id": call.prospect_id, "attempts": call.attempts}

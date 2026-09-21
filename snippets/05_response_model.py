@@ -11,10 +11,10 @@ app = FastAPI()
 
 
 class Quote(BaseModel):
-    price: float
-    currency: str
+    rate: float
+    term_months: int
 
 
 @app.get("/quote", response_model=Quote)
 def quote():
-    return {"price": 19.99, "currency": "GBP", "internal_score": 0.83}
+    return {"rate": 0.0325, "term_months": 12, "internal_score": 0.83}
