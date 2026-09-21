@@ -1,9 +1,9 @@
 {
   "model_version": "20260921-hgb-1",
-  "trained_at": "2026-09-21T08:23:40+00:00",
+  "trained_at": "2026-09-21T08:24:08+00:00",
   "git": {
-    "commit": "a7b59aeebed296da1a9e65907067375f03a617c0",
-    "dirty": true,
+    "commit": "0a5c99bf7a79c629ddbc576997bbf5649d8e1463",
+    "dirty": false,
     "note": null
   },
   "data_source": "kagglehub -> bank-additional-full.csv",
